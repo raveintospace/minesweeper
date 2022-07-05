@@ -9,14 +9,13 @@ import UIKit
 
 class ViewController: UICollectionViewController {
     
-    private var gameTimer: Timer?
-    private var count = 0
+    var gameTimer: Timer?
     
     private lazy var rightBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(title: "Mines left: 0", style: .plain, target: self, action: nil)
     }()
     private lazy var leftBarButtonItem: UIBarButtonItem = {
-        UIBarButtonItem(title: "Time: 00:00", style: .plain, target: self, action: nil)
+        UIBarButtonItem(title: "Time: 0", style: .plain, target: self, action: nil)
     }()
     
     private var mines = 0 {
@@ -35,6 +34,8 @@ class ViewController: UICollectionViewController {
         super.viewDidLoad()
         
         configureNavigation()
+        
+        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(addOne), userInfo: nil, repeats: true)
         
     }
     
@@ -72,6 +73,10 @@ class ViewController: UICollectionViewController {
         ac.addAction(UIAlertAction(title: "No", style: .cancel))
         present(ac, animated: true)
     }
+    
+    @objc func addOne() {
+        time += 1
+    }
 
     
 // https://www.youtube.com/watch?v=3TbdoVhgQmE
@@ -80,12 +85,12 @@ class ViewController: UICollectionViewController {
 //    }
 //
 //    @objc func timerCounter() -> Void {
-//        count = count + 1
-//        let customTime = secondstoMinutes(seconds: count)
+//        time = time + 1
+//        let customTime = secondstoMinutes(seconds: time)
 //        let timeString = makeTimeString(minutes: customTime.0, seconds: customTime.1)
 //        leftBarButtonItem.title = "Time: \(timeString)"
 //    }
-//
+
 //    private func secondstoMinutes(seconds: Int) -> (Int, Int) {
 //        return ((seconds / 3600), ((seconds % 3600 / 60)))
 //    }
