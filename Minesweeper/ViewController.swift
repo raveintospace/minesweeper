@@ -60,7 +60,14 @@ class ViewController: UICollectionViewController {
     }
     
     @objc func resetGame() { // method to reset the game
+        let ac = UIAlertController(title: "Reset game", message: "Do you want to reset the game?", preferredStyle: .alert)
         
+        ac.addAction(UIAlertAction(title: "Yes", style: .default)) // {
+           // [weak self] _ in
+            // restart game - check project 10_Redo
+        //}
+        ac.addAction(UIAlertAction(title: "No", style: .cancel))
+        present(ac, animated: true)
     }
 
 }
