@@ -36,7 +36,6 @@ class ViewController: UICollectionViewController {
         configureNavigation()
         
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(addOne), userInfo: nil, repeats: true)
-        
     }
     
     // how many squares our board has
@@ -66,11 +65,11 @@ class ViewController: UICollectionViewController {
     @objc func resetGame() { // method to reset the game
         let ac = UIAlertController(title: "Reset game", message: "Do you want to reset the game?", preferredStyle: .alert)
         
-        ac.addAction(UIAlertAction(title: "Yes", style: .default)) // {
-           // [weak self] _ in
-            // restart game - check project 10_Redo
-        //}
-        ac.addAction(UIAlertAction(title: "No", style: .cancel))
+        ac.addAction(UIAlertAction(title: "Yes", style: .default) {     // resets the game
+            [weak self] _ in
+            self?.time = 0
+        })
+        ac.addAction(UIAlertAction(title: "No", style: .cancel))    // does nothing
         present(ac, animated: true)
     }
     
@@ -81,25 +80,25 @@ class ViewController: UICollectionViewController {
     
 // https://www.youtube.com/watch?v=3TbdoVhgQmE
 //    private func configureTimer() {
-//        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
+//        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
 //    }
 //
 //    @objc func timerCounter() -> Void {
-//        time = time + 1
-//        let customTime = secondstoMinutes(seconds: time)
-//        let timeString = makeTimeString(minutes: customTime.0, seconds: customTime.1)
-//        leftBarButtonItem.title = "Time: \(timeString)"
+//        time += 1
+//        let newTime = secondsToMinutes(seconds: time)
+//        newTimeString = makeTimeString(minutes: newTime.0, seconds: newTime.1)
+//        leftBarButtonItem.title = "Time: \(newTimeString)"
 //    }
-
-//    private func secondstoMinutes(seconds: Int) -> (Int, Int) {
+//
+//    private func secondsToMinutes(seconds: Int) -> (Int, Int) {
 //        return ((seconds / 3600), ((seconds % 3600 / 60)))
 //    }
 //
 //    private func makeTimeString(minutes: Int, seconds: Int) -> String {
 //        var timeString = ""
-//        timeString += String(format: "%02d", minutes)
+//        timeString += String(format: "%02i", minutes)
 //        timeString += " : "
-//        timeString += String(format: "%02d", seconds)
+//        timeString += String(format: "%02i", seconds)
 //        return timeString
 //    }
 
