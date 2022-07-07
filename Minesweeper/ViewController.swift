@@ -18,6 +18,8 @@ class ViewController: UICollectionViewController {
         UIBarButtonItem(title: "Time: 0", style: .plain, target: self, action: nil)
     }()
     
+    private var minesList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false]
+    
     private var mines = 0 {
         didSet {
             rightBarButtonItem.title = "Mines left: \(mines)"
@@ -47,6 +49,16 @@ class ViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Square", for: indexPath) as? SquareCell else { fatalError("Unable to dequeue SquareCell")
         }
+        
+        let mineCell = minesList[indexPath.item]
+        if mineCell == true {
+            cell.backgroundColor = UIColor.red
+            print("true")
+        } else {
+            cell.backgroundColor = UIColor.green
+            print("false")
+        }
+    
         return cell
     }
     

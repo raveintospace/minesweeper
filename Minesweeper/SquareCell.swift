@@ -8,5 +8,4 @@
 import UIKit
 
 class SquareCell: UICollectionViewCell {
-    @IBOutlet var imageView: UIImageView!
 }
