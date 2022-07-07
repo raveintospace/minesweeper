@@ -7,9 +7,11 @@
 
 import UIKit
 
-class ViewController: UICollectionViewController {
+class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout { // delegate is necessary to programatically code our equal spacing
     
     var gameTimer: Timer?
+    
+    private var minesList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false]
     
     private lazy var rightBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(title: "Mines left: 0", style: .plain, target: self, action: nil)
@@ -17,8 +19,6 @@ class ViewController: UICollectionViewController {
     private lazy var leftBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(title: "Time: 0", style: .plain, target: self, action: nil)
     }()
-    
-    private var minesList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false]
     
     private var mines = 0 {
         didSet {
@@ -31,6 +31,8 @@ class ViewController: UICollectionViewController {
         }
     }
     
+    private let spacing: CGFloat = 16.0     // the space between the cells
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,11 +40,32 @@ class ViewController: UICollectionViewController {
         configureNavigation()
         
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(addOne), userInfo: nil, repeats: true)
+        
+        // code to configure our cells layout - https://medium.com/@NickBabo/equally-spaced-uicollectionview-cells-6e60ce8d457b
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
+        layout.minimumLineSpacing = spacing
+        layout.minimumInteritemSpacing = spacing
+        self.collectionView?.collectionViewLayout = layout
     }
     
     // how many squares our board has
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 16
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let numberOfItemsPerRow: CGFloat = 4
+        let spacingBetweenCells: CGFloat = 16
+        
+        let totalSpacing = (2 * self.spacing) + (numberOfItemsPerRow - 1) * spacingBetweenCells // Total spacing in a row
+        
+        if let collection = self.collectionView{
+            let width = (collection.bounds.width - totalSpacing)/numberOfItemsPerRow
+            return CGSize(width: width, height: width)
+        } else {
+            return CGSize(width: 0, height: 0)
+        }
     }
     
     // how our squares look
@@ -61,6 +84,7 @@ class ViewController: UICollectionViewController {
     
         return cell
     }
+    
     
     
     private func configureNavigation() {    // UI of our app
