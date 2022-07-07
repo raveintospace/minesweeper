@@ -54,14 +54,18 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return 16
     }
     
+    // how our layout looks equally spaced
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let numberOfItemsPerRow: CGFloat = 4
         let spacingBetweenCells: CGFloat = 16
         
         let totalSpacing = (2 * self.spacing) + (numberOfItemsPerRow - 1) * spacingBetweenCells // Total spacing in a row
+        print(self.spacing)
         
-        if let collection = self.collectionView{
+        if let collection = self.collectionView {
             let width = (collection.bounds.width - totalSpacing)/numberOfItemsPerRow
+            print(collection.bounds.width)
+            print(totalSpacing)
             return CGSize(width: width, height: width)
         } else {
             return CGSize(width: 0, height: 0)
@@ -84,8 +88,6 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
         return cell
     }
-    
-    
     
     private func configureNavigation() {    // UI of our app
         title = "Minesweeper"
