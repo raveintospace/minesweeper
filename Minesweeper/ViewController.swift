@@ -17,19 +17,19 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         UIBarButtonItem(title: "Mines left: 0", style: .plain, target: self, action: nil)
     }()
     private lazy var leftBarButtonItem: UIBarButtonItem = {
-        UIBarButtonItem(title: "Time: 0", style: .plain, target: self, action: nil)
+        UIBarButtonItem(title: "Time: 00:00", style: .plain, target: self, action: nil)
     }()
     
     private var mines = 0 {
         didSet {
             rightBarButtonItem.title = "Mines left: \(mines)"
-        }
-    }
-    private var time = 0 {
-        didSet {
-            leftBarButtonItem.title = "Time: \(time)"
-        }
-    }
+         }
+     }
+    private var time: Double = 0 // {
+//        didSet {
+//            leftBarButtonItem.title = "Time: \(time)"
+//        }
+//    }
     
     private let spacing: CGFloat = 16.0     // the space between the cells
     
@@ -39,7 +39,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         configureNavigation()
         
-        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(addOne), userInfo: nil, repeats: true)
+        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
         
         // code to configure our cells layout - https://medium.com/@NickBabo/equally-spaced-uicollectionview-cells-6e60ce8d457b
         let layout = UICollectionViewFlowLayout()
@@ -110,35 +110,20 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         ac.addAction(UIAlertAction(title: "No", style: .cancel))    // does nothing
         present(ac, animated: true)
     }
-    
-    @objc func addOne() {
-        time += 1
-    }
 
+    // func to convert our "time" (Double) into a string
+    private func timeString(time: TimeInterval) -> String {
+        let minute = Int(time) / 60 % 60
+        let second = Int(time) % 60
+        return String(format: "%02i:%02i", minute, second)
+    }
     
-// https://www.youtube.com/watch?v=3TbdoVhgQmE
-//    private func configureTimer() {
-//        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
-//    }
-//
-//    @objc func timerCounter() -> Void {
-//        time += 1
-//        let newTime = secondsToMinutes(seconds: time)
-//        newTimeString = makeTimeString(minutes: newTime.0, seconds: newTime.1)
-//        leftBarButtonItem.title = "Time: \(newTimeString)"
-//    }
-//
-//    private func secondsToMinutes(seconds: Int) -> (Int, Int) {
-//        return ((seconds / 3600), ((seconds % 3600 / 60)))
-//    }
-//
-//    private func makeTimeString(minutes: Int, seconds: Int) -> String {
-//        var timeString = ""
-//        timeString += String(format: "%02i", minutes)
-//        timeString += " : "
-//        timeString += String(format: "%02i", seconds)
-//        return timeString
-//    }
+    // func called every second to update our timer
+    @objc func timerCounter() {
+        time += 1
+        leftBarButtonItem.title = "Time: \(timeString(time: time))"
+        print(timeString(time: time))
+    }
 
 }
 
