@@ -107,11 +107,11 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             [weak self] _ in
             self?.time = 0
         })
-        ac.addAction(UIAlertAction(title: "No", style: .cancel))    // does nothing
+        ac.addAction(UIAlertAction(title: "No", style: .destructive))    // does nothing // .destructive tints the button to red
         present(ac, animated: true)
     }
 
-    // func to convert our "time" (Double) into a string
+    // func to convert our "time" (Double) into a string - https://stackoverflow.com/questions/26794703/swift-integer-conversion-to-hours-minutes-seconds/56811188#56811188?newreg=7c7f69c3286442c38ae7bca11b9ed359 (Swift 5)
     private func timeString(time: TimeInterval) -> String {
         let minute = Int(time) / 60 % 60
         let second = Int(time) % 60
