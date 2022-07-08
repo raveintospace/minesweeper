@@ -11,7 +11,8 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var gameTimer: Timer?
     
-    private var minesList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false]
+    var minesList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false]
+    // var minesCount = self().minesList.count { $0 == true }
     
     private lazy var rightBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(title: "Mines left: 0", style: .plain, target: self, action: nil)
@@ -124,6 +125,13 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         leftBarButtonItem.title = "Time: \(timeString(time: time))"
         print(timeString(time: time))
     }
+    
+}
 
+// extension to count how many trues our minesList has - https://www.hackingwithswift.com/example-code/language/how-to-count-matching-items-in-an-array
+extension Collection {
+    func count(where test: (Element) throws -> Bool) rethrows -> Int {
+        return try self.filter(test).count
+    }
 }
 
