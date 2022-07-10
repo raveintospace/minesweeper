@@ -11,11 +11,13 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var gameTimer: Timer?
     
-    var minesList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false]
-    // var minesCount = self().minesList.count { $0 == true }
+    var minesList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false] // pending to check if number of booleans has a sqr
+    var minesCount: Int {
+        minesList.filter{ $0 == true }.count
+    }
     
     private lazy var rightBarButtonItem: UIBarButtonItem = {
-        UIBarButtonItem(title: "Mines left: 0", style: .plain, target: self, action: nil)
+        UIBarButtonItem(title: "Mines left: \(minesCount)", style: .plain, target: self, action: nil)
     }()
     private lazy var leftBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(title: "Time: 00:00", style: .plain, target: self, action: nil)
@@ -23,14 +25,10 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     private var mines = 0 {
         didSet {
-            rightBarButtonItem.title = "Mines left: \(mines)"
+            rightBarButtonItem.title = "Mines left: \(minesCount)"
          }
      }
-    private var time: Double = 0 // {
-//        didSet {
-//            leftBarButtonItem.title = "Time: \(time)"
-//        }
-//    }
+    private var time: Double = 0
     
     private let spacing: CGFloat = 16.0     // the space between the cells
     
@@ -52,12 +50,12 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // how many squares our board has
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 16
+        return minesList.count
     }
     
     // how our layout looks equally spaced
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let numberOfItemsPerRow: CGFloat = 4
+        let numberOfItemsPerRow = sqrt(Double(minesList.count))
         let spacingBetweenCells: CGFloat = 16
         
         let totalSpacing = (2 * self.spacing) + (numberOfItemsPerRow - 1) * spacingBetweenCells // Total spacing in a row
@@ -108,7 +106,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             [weak self] _ in
             self?.time = 0
         })
-        ac.addAction(UIAlertAction(title: "No", style: .destructive))    // does nothing // .destructive tints the button to red
+        ac.addAction(UIAlertAction(title: "No", style: .destructive))    // does nothing //.destructive tints the button to red
         present(ac, animated: true)
     }
 
@@ -128,10 +126,10 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
 }
 
-// extension to count how many trues our minesList has - https://www.hackingwithswift.com/example-code/language/how-to-count-matching-items-in-an-array
-extension Collection {
-    func count(where test: (Element) throws -> Bool) rethrows -> Int {
-        return try self.filter(test).count
-    }
-}
+//// extension to count how many trues our minesList has - https://www.hackingwithswift.com/example-code/language/how-to-count-matching-items-in-an-array
+//extension Collection {
+//    func count(where test: (Element) throws -> Bool) rethrows -> Int {
+//        return try self.filter(test).count
+//    }
+//}
 
