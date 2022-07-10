@@ -32,9 +32,19 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     private let spacing: CGFloat = 16.0     // the space between the cells
     
+    init() {
+        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+    }
+    
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView.register(SquareCell.self, forCellWithReuseIdentifier: "Square") // registration of our custom cell
         
         configureNavigation()
         
