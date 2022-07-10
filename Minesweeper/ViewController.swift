@@ -126,10 +126,4 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
 }
 
-//// extension to count how many trues our minesList has - https://www.hackingwithswift.com/example-code/language/how-to-count-matching-items-in-an-array
-//extension Collection {
-//    func count(where test: (Element) throws -> Bool) rethrows -> Int {
-//        return try self.filter(test).count
-//    }
-//}
 
