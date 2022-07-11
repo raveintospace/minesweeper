@@ -36,7 +36,6 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -110,13 +109,19 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func resetGame() { // method to reset the game
+        gameTimer?.invalidate()
         let ac = UIAlertController(title: "Reset game", message: "Do you want to reset the game?", preferredStyle: .alert)
-        
+
         ac.addAction(UIAlertAction(title: "Yes", style: .default) {     // resets the game
             [weak self] _ in
             self?.time = 0
+            self?.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.timerCounter), userInfo: nil, repeats: true)
+            
         })
-        ac.addAction(UIAlertAction(title: "No", style: .destructive))    // does nothing //.destructive tints the button to red
+        ac.addAction(UIAlertAction(title: "No", style: .destructive) {    // does nothing //.destructive tints the button to red
+            [weak self] _ in
+            self?.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.timerCounter), userInfo: nil, repeats: true)
+        })
         present(ac, animated: true)
     }
 
