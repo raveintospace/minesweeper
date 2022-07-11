@@ -11,9 +11,9 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var gameTimer: Timer?
     
-    var minesList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false] // pending to check if number of booleans has a sqr
+    var cellList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false]
     var minesCount: Int {
-        minesList.filter{ $0 == true }.count
+        cellList.filter{ $0 == true }.count
     }
     
     private lazy var rightBarButtonItem: UIBarButtonItem = {
@@ -49,6 +49,8 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
         
+       // hasPerfectSquare() - pending to finish the while loop
+        
         // code to configure our cells layout - https://medium.com/@NickBabo/equally-spaced-uicollectionview-cells-6e60ce8d457b
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
@@ -59,16 +61,15 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // how many squares our board has
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return minesList.count
+        return cellList.count
     }
     
     // how our layout looks equally spaced
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let numberOfItemsPerRow = sqrt(Double(minesList.count))
+        let numberOfItemsPerRow = sqrt(Double(cellList.count))
         let spacingBetweenCells: CGFloat = 16
         
-        let totalSpacing = (2 * self.spacing) + (numberOfItemsPerRow - 1) * spacingBetweenCells // Total spacing in a row
-        print(self.spacing)
+        let totalSpacing = (2 * self.spacing) + (numberOfItemsPerRow - 1) * spacingBetweenCells // Total spacing in a row, pendent consultar makabre
         
         if let collection = self.collectionView {
             let width = (collection.bounds.width - totalSpacing)/numberOfItemsPerRow
@@ -85,13 +86,13 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Square", for: indexPath) as? SquareCell else { fatalError("Unable to dequeue SquareCell")
         }
         
-        let mineCell = minesList[indexPath.item]
+        let mineCell = cellList[indexPath.item]
         if mineCell == true {
             cell.backgroundColor = UIColor.red
-            print("true")
+            // print("true")
         } else {
             cell.backgroundColor = UIColor.green
-            print("false")
+            // print("false")
         }
     
         return cell
@@ -138,6 +139,12 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         leftBarButtonItem.title = "Time: \(timeString(time: time))"
         // print(timeString(time: time))
     }
+    
+    // func to add true & falses if cellList.isPerfectSquare returns false -- pending to finish a while loop
+//    func hasPerfectSquare() {
+//        while (cellList.count).isPerfectSquare == false {
+//            print("fato", cellList.count)
+//    }
     
 } // last brace
 
