@@ -120,7 +120,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         })
         ac.addAction(UIAlertAction(title: "No", style: .destructive) {    // does nothing //.destructive tints the button to red
             [weak self] _ in
-            self?.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.timerCounter), userInfo: nil, repeats: true)
+            self?.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.timerCounter), userInfo: nil, repeats: true)       // pending to check self! with Makabre
         })
         present(ac, animated: true)
     }
@@ -136,9 +136,24 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     @objc func timerCounter() {
         time += 1
         leftBarButtonItem.title = "Time: \(timeString(time: time))"
-        print(timeString(time: time))
+        // print(timeString(time: time))
     }
     
+} // last brace
+
+extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swift-3-find-if-the-number-is-a-perfect-square
+    var isPerfectSquare: Bool {
+        guard self >= .zero else { return false }
+        var sum: Self = .zero
+        var count: Self = .zero
+        var squareRoot: Self = .zero
+        while sum < self {
+            count += 2
+            sum += count
+            squareRoot += 1
+        }
+        return squareRoot * squareRoot == self
+    }
 }
 
 
