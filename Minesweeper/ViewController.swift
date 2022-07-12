@@ -11,7 +11,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var gameTimer: Timer?
     
-    var cellList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false]
+    var cellList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false, true]
     var minesCount: Int {
         cellList.filter{ $0 == true }.count
     }
@@ -43,13 +43,16 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        hasPerfectSquare()
+        
         collectionView.register(SquareCell.self, forCellWithReuseIdentifier: "Square") // registration of our custom cell
         
         configureNavigation()
         
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
         
-       // hasPerfectSquare() - pending to finish the while loop
+        print("cellCount: \(cellList.count)")
+        
         
         // code to configure our cells layout - https://medium.com/@NickBabo/equally-spaced-uicollectionview-cells-6e60ce8d457b
         let layout = UICollectionViewFlowLayout()
@@ -73,8 +76,8 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         if let collection = self.collectionView {
             let width = (collection.bounds.width - totalSpacing)/numberOfItemsPerRow
-            print(collection.bounds.width)
-            print(totalSpacing)
+            // print(collection.bounds.width)
+            // print(totalSpacing)
             return CGSize(width: width, height: width)
         } else {
             return CGSize(width: 0, height: 0)
@@ -140,11 +143,16 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         // print(timeString(time: time))
     }
     
-    // func to add true & falses if cellList.isPerfectSquare returns false -- pending to finish a while loop
-//    func hasPerfectSquare() {
-//        while (cellList.count).isPerfectSquare == false {
-//            print("fato", cellList.count)
-//    }
+    // func to add true & falses if cellList.isPerfectSquare returns false -- pending to recalculate numberOfItemsPerRow
+    func hasPerfectSquare() {
+        var cellCountInFunc = cellList.count
+        
+        while cellCountInFunc.isPerfectSquare == false {
+            cellCountInFunc += 1
+            cellList.append(Bool.random())
+            print("fato", cellCountInFunc)
+        }
+    }
     
 } // last brace
 
