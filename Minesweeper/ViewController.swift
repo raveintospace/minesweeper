@@ -11,7 +11,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var gameTimer: Timer?
     
-    var cellList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false, true]
+    var cellList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false] // add one bool to check hasPerfectSquare()
     var minesCount: Int {
         cellList.filter{ $0 == true }.count
     }
@@ -97,7 +97,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             cell.backgroundColor = UIColor.green
             // print("false")
         }
-    
+        
         return cell
     }
     
@@ -144,7 +144,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     // func to add true & falses if cellList.isPerfectSquare returns false -- pending to recalculate numberOfItemsPerRow
-    func hasPerfectSquare() {
+    private func hasPerfectSquare() {
         var cellCountInFunc = cellList.count
         
         while cellCountInFunc.isPerfectSquare == false {
@@ -154,8 +154,20 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
+    private func configureDataSet() {
+        for item in cellList {
+            if item == false {
+                // append to MinesData, setting the string for the uilabel
+            } else {
+                // append to MinesData, setting an image?
+            }
+        }
+    }
+    
+    
 } // last brace
 
+// extension to check if an Int has a perfectSquare
 extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swift-3-find-if-the-number-is-a-perfect-square
     var isPerfectSquare: Bool {
         guard self >= .zero else { return false }
@@ -169,6 +181,11 @@ extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swif
         }
         return squareRoot * squareRoot == self
     }
+}
+
+struct MineData {
+    let hasMine: Bool
+    let mineIndicator: String?
 }
 
 
