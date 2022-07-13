@@ -11,8 +11,12 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var gameTimer: Timer?
     
-    var cellList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false] // add one bool to check hasPerfectSquare()
-    var minesCount: Int {
+    private var minesData = [MineData]()    // array of MineData
+    
+    private var imageData = [String]()      // array of strings with our images names
+    
+    private var cellList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false] // add one bool to check hasPerfectSquare()
+    private var minesCount: Int {
         cellList.filter{ $0 == true }.count
     }
     
@@ -48,6 +52,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.register(SquareCell.self, forCellWithReuseIdentifier: "Square") // registration of our custom cell
         
         configureNavigation()
+        configureDataSet()
         
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
         
@@ -84,14 +89,33 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    // how our squares look
+    // how our squares look - phase 1
+//    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Square", for: indexPath) as? SquareCell else { fatalError("Unable to dequeue SquareCell")
+//        }
+//
+//        let mineCell = cellList[indexPath.item]
+//        if mineCell == true {
+//            cell.backgroundColor = UIColor.red
+//            // print("true")
+//        } else {
+//            cell.backgroundColor = UIColor.green
+//            // print("false")
+//        }
+//
+//        return cell
+//    }
+    
+    // how our squares look - phase 2
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Square", for: indexPath) as? SquareCell else { fatalError("Unable to dequeue SquareCell")
         }
         
-        let mineCell = cellList[indexPath.item]
-        if mineCell == true {
+        let mineCell = minesData[indexPath.item]
+        if mineCell.hasMine == true {
             cell.backgroundColor = UIColor.red
+            cell.imageView.image = UIImage(named: mineCell.imagePath)
+            cell.imageView.contentMode = .scaleToFill
             // print("true")
         } else {
             cell.backgroundColor = UIColor.green
@@ -155,11 +179,22 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     private func configureDataSet() {
+        let fm = FileManager.default            // data type that lets us work with the filesystem
+        let path = Bundle.main.resourcePath!    // where I can find all those images I added to my app.
+        let images = try! fm.contentsOfDirectory(atPath: path) // The items constant will be an array of strings containing filenames.
+        
+        for image in images {
+            if image.hasSuffix(".png") {
+                imageData.append(image)
+            }
+        }
+        print(imageData) // pending to alphabetically sort our imageData array
+        
         for item in cellList {
-            if item == false {
-                // append to MinesData, setting the string for the uilabel
-            } else {
-                // append to MinesData, setting an image?
+            if item == false {  // append to MinesData, setting the string for the imagePath. 5 different indicators
+                minesData.append(MineData(hasMine: false, imagePath: "one.png"))
+            } else {    // append to MinesData, setting the string for the bomb image
+                minesData.append(MineData(hasMine: true, imagePath: "bomb.png"))
             }
         }
     }
@@ -185,7 +220,7 @@ extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swif
 
 struct MineData {
     let hasMine: Bool
-    let mineIndicator: String?
+    let imagePath: String  // an image showing a bomb or a number with nearby bombs
 }
 
 
