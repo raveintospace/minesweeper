@@ -113,12 +113,13 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let mineCell = minesData[indexPath.item]
         if mineCell.hasMine == true {
-            cell.backgroundColor = UIColor.red
-            cell.imageView.image = UIImage(named: mineCell.imagePath)
-            cell.imageView.contentMode = .scaleToFill
+            // cell.backgroundColor = UIColor.red
+            cell.imageView.image = UIImage(named: imageData[0])
+            cell.imageView.contentMode = .scaleAspectFit
             // print("true")
         } else {
             cell.backgroundColor = UIColor.green
+            cell.imageView.image = UIImage(named: imageData[2])
             // print("false")
         }
         
@@ -181,9 +182,9 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     private func configureDataSet() {
         let fm = FileManager.default            // data type that lets us work with the filesystem
         let path = Bundle.main.resourcePath!    // where I can find all those images I added to my app.
-        let images = try! fm.contentsOfDirectory(atPath: path) // The items constant will be an array of strings containing filenames.
+        let images = try! fm.contentsOfDirectory(atPath: path).sorted() // The images constant will be an array of strings containing filenames.
         
-        for image in images {
+        for image in images {               // append the string of each filename to our imageData array
             if image.hasSuffix(".png") {
                 imageData.append(image)
             }
