@@ -15,7 +15,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     private var imageData = [String]()      // array of strings with our images names
     
-    private var cellList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false] // add one bool to check hasPerfectSquare()
+    private var cellList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false] // add one bool to check hasPerfectSquare() works
     private var minesCount: Int {
         cellList.filter{ $0 == true }.count
     }
@@ -112,13 +112,9 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let mineCell = minesData[indexPath.item]
         if mineCell.hasMine == true {
-            cell.backgroundColor = UIColor.red
             cell.bg.image = UIImage(named: imageData[0])
-            // print("true")
         } else {
-            cell.backgroundColor = UIColor.green
             cell.bg.image = UIImage(named: imageData[2])
-            // print("false")
         }
         
         return cell
@@ -188,6 +184,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             }
         }
         print(imageData) // pending to alphabetically sort our imageData array
+        
         
         for item in cellList {
             if item == false {  // append to MinesData, setting the string for the imagePath. 5 different indicators

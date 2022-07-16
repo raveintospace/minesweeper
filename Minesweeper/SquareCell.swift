@@ -15,6 +15,7 @@ class SquareCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.image = UIImage()
         imageView.layer.cornerRadius = 12
+        imageView.backgroundColor = UIColor.gray
         return imageView
     }()
     
