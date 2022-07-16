@@ -221,14 +221,23 @@ struct MineData {
 
 
 /*
- Logica per detectar mines
+ ---- LOGICA PER DETECTAR MINES ----
+ 
  1st item 1st row & last item 1st row -> check 3
+    1st item always = indexpath 0
+    last item 1st row = numberOfItemsPerRow - 1 (ie 4)
  1st item last row & last item last row -> check 3
+    1st item last row = cellList.count - numberOfItemsPerRow (ie 25 - 5)
+    last item last row = cellList.count - 1 (ie 24)
  
  rest items of 1st row -> check 5
+    for cell between indexpath[0] & indexpath[(numberOfitemspPerRow - 1)]
  rest items of 1st column -> check 5
+    for cell indexpath[x] % numberOfItemsPerRow = 0 // as many times as numberOfItemsPerRow - 2 (-2 are the two corners)
  rest items of last row -> check 5
+    for cell between indexpath[1stItemLastRow] & indexpath[cellList.count - 1]
  rest items of last column -> check 5
+    for cell indexpath[x] % numberOfItemsPerRow = 4 // as many times as numberOfItemsPerRow - 2 (-2 are the two corners)
  
  rest items -> check 8
  
