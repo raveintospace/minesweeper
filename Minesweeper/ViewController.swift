@@ -220,3 +220,16 @@ struct MineData {
 }
 
 
+/*
+ Logica per detectar mines
+ 1st item 1st row & last item 1st row -> check 3
+ 1st item last row & last item last row -> check 3
+ 
+ rest items of 1st row -> check 5
+ rest items of 1st column -> check 5
+ rest items of last row -> check 5
+ rest items of last column -> check 5
+ 
+ rest items -> check 8
+ 
+ */
