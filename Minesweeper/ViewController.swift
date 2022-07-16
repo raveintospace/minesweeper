@@ -58,7 +58,6 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         print("cellCount: \(cellList.count)")
         
-        
         // code to configure our cells layout - https://medium.com/@NickBabo/equally-spaced-uicollectionview-cells-6e60ce8d457b
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
@@ -113,13 +112,12 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let mineCell = minesData[indexPath.item]
         if mineCell.hasMine == true {
-            // cell.backgroundColor = UIColor.red
-            cell.imageView.image = UIImage(named: imageData[0])
-            cell.imageView.contentMode = .scaleAspectFit
+            cell.backgroundColor = UIColor.red
+            cell.bg.image = UIImage(named: imageData[0])
             // print("true")
         } else {
             cell.backgroundColor = UIColor.green
-            cell.imageView.image = UIImage(named: imageData[2])
+            cell.bg.image = UIImage(named: imageData[2])
             // print("false")
         }
         
