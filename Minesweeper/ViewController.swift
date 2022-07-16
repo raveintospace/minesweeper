@@ -195,7 +195,6 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    
 } // last brace
 
 // extension to check if an Int has a perfectSquare
@@ -224,21 +223,33 @@ struct MineData {
  ---- LOGICA PER DETECTAR MINES ----
  
  1st item 1st row & last item 1st row -> check 3
-    1st item always = indexpath 0
-    last item 1st row = numberOfItemsPerRow - 1 (ie 4)
+    1st item always = indexpath 0 --- +1, +5, +6
+    last item 1st row = numberOfItemsPerRow - 1 (ie 4) --- -1, +4, +5
  1st item last row & last item last row -> check 3
-    1st item last row = cellList.count - numberOfItemsPerRow (ie 25 - 5)
-    last item last row = cellList.count - 1 (ie 24)
+    1st item last row = cellList.count - numberOfItemsPerRow (ie 25 - 5) --- -5, -4, +1 (inversa last 1st)
+    last item last row = cellList.count - 1 (ie 24) --- -6, -5, -1 (inversa 1st)
  
  rest items of 1st row -> check 5
-    for cell between indexpath[0] & indexpath[(numberOfitemspPerRow - 1)]
+    for cell between indexpath[0] & indexpath[(numberOfitemspPerRow - 1)] --- -1, +1, +4, +5, +6
  rest items of 1st column -> check 5
     for cell indexpath[x] % numberOfItemsPerRow = 0 // as many times as numberOfItemsPerRow - 2 (-2 are the two corners)
+        -5, -4, +1, +5, +6
  rest items of last row -> check 5
-    for cell between indexpath[1stItemLastRow] & indexpath[cellList.count - 1]
+    for cell between indexpath[1stItemLastRow] & indexpath[cellList.count - 1] --- -6, -5, -4, -1, +1 (inversa!)
  rest items of last column -> check 5
     for cell indexpath[x] % numberOfItemsPerRow = 4 // as many times as numberOfItemsPerRow - 2 (-2 are the two corners)
+        -6, -5, -1, +4, +5 (inversa)
  
- rest items -> check 8
+ rest items -> check 8  --- -6, -5, -4, -1, +1, +4, +5, +6
+        
+ let numberOfItemsPerRow = 5 //      let numberOfItemsPerRow = sqrt(Double(cellList.count))
+ let negativeNumberOfItemsPerRow = -numberOfItemsPerRow  // -5
+ let numberOfItemsPerRowPlusOne = numberOfItemsPerRow + 1    // 6
+ let numberOfItemsPerRowMinusOne = numberOfItemsPerRow - 1   // 4
+ let negativeNumberOfItemsPerRowMinusOne = -numberOfItemsPerRow - 1 // -6
+ let negativeNumberOfItemsPerRowPlusOne = -numberOfItemsPerRow + 1   // -4
  
+ donar nom a cada tipus de grup de cela xq a l'iniciar el joc s'agrupin
+ calcular les sumes i restes en base al valor de numberOfItemsPerRow (ie numberOfItemsPerRow + 1 = 6), pq s'adapti a grids amb mes celes.
+ PREGUNTAR A MAKABRE SI numberOfItemsPerRow el podem calcular abans de viewDidLoad
  */
