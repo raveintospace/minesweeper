@@ -53,6 +53,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         configureNavigation()
         configureDataSet()
+        calculateNearbyMines()
         
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
         
@@ -164,12 +165,12 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // func to add true & falses if cellList.isPerfectSquare returns false -- pending to recalculate numberOfItemsPerRow
     private func hasPerfectSquare() {
-        var cellCountInFunc = cellList.count
+        var cellCount = cellList.count
         
-        while cellCountInFunc.isPerfectSquare == false {
-            cellCountInFunc += 1
+        while cellCount.isPerfectSquare == false {
+            cellCount += 1
             cellList.append(Bool.random())
-            print("fato", cellCountInFunc)
+            print("fato", cellCount)
         }
     }
     
@@ -195,6 +196,41 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
+    private func calculateNearbyMines() {
+        var numberOfItemsPerRow = sqrt(Double(cellList.count))
+        var negativeNumberOfItemsPerRow = -numberOfItemsPerRow  // -5
+        var numberOfItemsPerRowPlusOne = numberOfItemsPerRow + 1    // 6
+        var numberOfItemsPerRowMinusOne = numberOfItemsPerRow - 1   // 4
+        var negativeNumberOfItemsPerRowMinusOne = -numberOfItemsPerRow - 1 // -6
+        var negativeNumberOfItemsPerRowPlusOne = -numberOfItemsPerRow + 1   // -4
+        
+        // block of cells with 3 checks
+        for mineData in minesData {
+            if mineData == minesData[0] {
+                if minesData[1].hasMine == true {
+                    minesData[0].mineCounter += 1
+                    print("Cell 0 = \(minesData[0].mineCounter)")
+                } else if minesData[5].hasMine == true {
+                    minesData[0].mineCounter += 1
+                    print("hi ha mina")
+                } else if minesData[6].hasMine == true {
+                    minesData[0].mineCounter += 1
+                    print("Cell 0 = \(minesData[0].mineCounter)")
+                }
+            }
+            
+            if mineData == minesData[4] {
+                if minesData[3].hasMine == true {
+                    minesData[4].mineCounter += 1
+                } else if minesData[8].hasMine == true {
+                    minesData[4].mineCounter += 1
+                } else if minesData[9].hasMine == true {
+                    minesData[4].mineCounter += 1
+                }
+            }
+        }
+    }
+    
 } // last brace
 
 // extension to check if an Int has a perfectSquare
@@ -213,9 +249,10 @@ extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swif
     }
 }
 
-struct MineData {
+struct MineData: Equatable {
     let hasMine: Bool
     let imagePath: String  // an image showing a bomb or a number with nearby bombs
+    var mineCounter = 0
 }
 
 
