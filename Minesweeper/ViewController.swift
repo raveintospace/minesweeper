@@ -197,36 +197,61 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     private func calculateNearbyMines() {
-        var numberOfItemsPerRow = sqrt(Double(cellList.count))
-        var negativeNumberOfItemsPerRow = -numberOfItemsPerRow  // -5
-        var numberOfItemsPerRowPlusOne = numberOfItemsPerRow + 1    // 6
-        var numberOfItemsPerRowMinusOne = numberOfItemsPerRow - 1   // 4
-        var negativeNumberOfItemsPerRowMinusOne = -numberOfItemsPerRow - 1 // -6
-        var negativeNumberOfItemsPerRowPlusOne = -numberOfItemsPerRow + 1   // -4
+        let numberOfItemsPerRow = sqrt(Double(cellList.count))
+        let intNumberOfItemsPerRow = Int(numberOfItemsPerRow)
+        let negativeNumberOfItemsPerRow = -intNumberOfItemsPerRow  // -5
+        let numberOfItemsPerRowPlusOne = intNumberOfItemsPerRow + 1    // 6
+        let numberOfItemsPerRowMinusOne = intNumberOfItemsPerRow - 1   // 4
+        let negativeNumberOfItemsPerRowMinusOne = -intNumberOfItemsPerRow - 1 // -6
+        let negativeNumberOfItemsPerRowPlusOne = -intNumberOfItemsPerRow + 1   // -4
         
         // block of cells with 3 checks
         for mineData in minesData {
+            
+            // first row, first column
             if mineData == minesData[0] {
-                if minesData[1].hasMine == true {
-                    minesData[0].mineCounter += 1
-                    print("Cell 0 = \(minesData[0].mineCounter)")
-                } else if minesData[5].hasMine == true {
-                    minesData[0].mineCounter += 1
-                    print("hi ha mina")
-                } else if minesData[6].hasMine == true {
-                    minesData[0].mineCounter += 1
-                    print("Cell 0 = \(minesData[0].mineCounter)")
+                switch (minesData[1].hasMine, minesData[intNumberOfItemsPerRow].hasMine, minesData[numberOfItemsPerRowPlusOne].hasMine) {
+                case(true, true, true):
+                    minesData[0].mineCounter = 3
+                case(false, true, true):
+                    minesData[0].mineCounter = 2
+                case(true, false, true):
+                    minesData[0].mineCounter = 2
+                case(true, true, false):
+                    minesData[0].mineCounter = 2
+                case(false, false, true):
+                    minesData[0].mineCounter = 1
+                case(true, false, false):
+                    minesData[0].mineCounter = 1
+                case(false, true, false):
+                    minesData[0].mineCounter = 1
+                case(false, false, false):
+                    minesData[0].mineCounter = 0
                 }
+                print(minesData[0].mineCounter)
             }
             
-            if mineData == minesData[4] {
-                if minesData[3].hasMine == true {
-                    minesData[4].mineCounter += 1
-                } else if minesData[8].hasMine == true {
-                    minesData[4].mineCounter += 1
-                } else if minesData[9].hasMine == true {
-                    minesData[4].mineCounter += 1
+            // first row, last column
+            if mineData == minesData[numberOfItemsPerRowMinusOne] {
+                switch (minesData[(numberOfItemsPerRowMinusOne) - (1)].hasMine, minesData[(numberOfItemsPerRowMinusOne) + (numberOfItemsPerRowMinusOne)].hasMine, minesData[(numberOfItemsPerRowMinusOne) + (intNumberOfItemsPerRow)].hasMine) {
+                case(true, true, true):
+                    minesData[numberOfItemsPerRowMinusOne].mineCounter = 3
+                case(false, true, true):
+                    minesData[numberOfItemsPerRowMinusOne].mineCounter = 2
+                case(true, false, true):
+                    minesData[numberOfItemsPerRowMinusOne].mineCounter = 2
+                case(true, true, false):
+                    minesData[numberOfItemsPerRowMinusOne].mineCounter = 2
+                case(false, false, true):
+                    minesData[numberOfItemsPerRowMinusOne].mineCounter = 1
+                case(true, false, false):
+                    minesData[numberOfItemsPerRowMinusOne].mineCounter = 1
+                case(false, true, false):
+                    minesData[numberOfItemsPerRowMinusOne].mineCounter = 1
+                case(false, false, false):
+                    minesData[numberOfItemsPerRowMinusOne].mineCounter = 0
                 }
+                print(minesData[numberOfItemsPerRowMinusOne].mineCounter)
             }
         }
     }
