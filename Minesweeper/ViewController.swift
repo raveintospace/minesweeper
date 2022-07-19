@@ -257,13 +257,24 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             
             // last row, first column
             if mineData == minesData[(cellList.count) - (intNumberOfItemsPerRow)] {
-                var minesToCheck = [minesData[(cellList.count) - (intNumberOfItemsPerRow * 2)], minesData[(cellList.count) - (intNumberOfItemsPerRow * 2) + 1], minesData[(cellList.count) - numberOfItemsPerRowMinusOne]]
+                var minesToCheck = [minesData[(cellList.count) - (intNumberOfItemsPerRow * 2)], minesData[(cellList.count) - (intNumberOfItemsPerRow * 2) + 1], minesData[(cellList.count) - numberOfItemsPerRowMinusOne]] // 15, 16, 21
                 for item in minesToCheck {
                     if item.hasMine == true {
                         minesData[(cellList.count) - (intNumberOfItemsPerRow)].mineCounter += 1
                     }
                 }
                 print("Cela 20: \(minesData[(cellList.count) - (intNumberOfItemsPerRow)].mineCounter)")
+            }
+            
+            // last row, last column
+            if mineData == minesData[(cellList.count) - 1] {
+                var minesToCheck = [minesData[(cellList.count) - 2], minesData[(cellList.count) - numberOfItemsPerRowPlusOne - 1], minesData[(cellList.count) - numberOfItemsPerRowPlusOne]] // 23, 18, 19
+                for item in minesToCheck {
+                    if item.hasMine == true {
+                        minesData[(cellList.count) - 1].mineCounter += 1
+                    }
+                }
+                print("Cela 24: \(minesData[(cellList.count) - 1].mineCounter)")
             }
         }
     }
