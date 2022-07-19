@@ -197,13 +197,10 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     private func calculateNearbyMines() {
-        let numberOfItemsPerRow = sqrt(Double(cellList.count))
+        let numberOfItemsPerRow = sqrt(Double(cellList.count))      // 5
         let intNumberOfItemsPerRow = Int(numberOfItemsPerRow)
-        let negativeNumberOfItemsPerRow = -intNumberOfItemsPerRow  // -5
-        let numberOfItemsPerRowPlusOne = intNumberOfItemsPerRow + 1    // 6
-        let numberOfItemsPerRowMinusOne = intNumberOfItemsPerRow - 1   // 4
-        let negativeNumberOfItemsPerRowMinusOne = -intNumberOfItemsPerRow - 1 // -6
-        let negativeNumberOfItemsPerRowPlusOne = -intNumberOfItemsPerRow + 1   // -4
+        let numberOfItemsPerRowPlusOne = intNumberOfItemsPerRow + 1    // cellList.count + 1 (6)
+        let numberOfItemsPerRowMinusOne = intNumberOfItemsPerRow - 1   // cellList.count - 1 (4)
         
         // block of cells with 3 checks
         for mineData in minesData {
@@ -257,7 +254,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             
             // last row, first column
             if mineData == minesData[(cellList.count) - (intNumberOfItemsPerRow)] {
-                var minesToCheck = [minesData[(cellList.count) - (intNumberOfItemsPerRow * 2)], minesData[(cellList.count) - (intNumberOfItemsPerRow * 2) + 1], minesData[(cellList.count) - numberOfItemsPerRowMinusOne]] // 15, 16, 21
+                let minesToCheck = [minesData[(cellList.count) - (intNumberOfItemsPerRow * 2)], minesData[(cellList.count) - (intNumberOfItemsPerRow * 2) + 1], minesData[(cellList.count) - numberOfItemsPerRowMinusOne]] // 15, 16, 21
                 for item in minesToCheck {
                     if item.hasMine == true {
                         minesData[(cellList.count) - (intNumberOfItemsPerRow)].mineCounter += 1
@@ -268,7 +265,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             
             // last row, last column
             if mineData == minesData[(cellList.count) - 1] {
-                var minesToCheck = [minesData[(cellList.count) - 2], minesData[(cellList.count) - numberOfItemsPerRowPlusOne - 1], minesData[(cellList.count) - numberOfItemsPerRowPlusOne]] // 23, 18, 19
+                let minesToCheck = [minesData[(cellList.count) - 2], minesData[(cellList.count) - numberOfItemsPerRowPlusOne - 1], minesData[(cellList.count) - numberOfItemsPerRowPlusOne]] // 23, 18, 19
                 for item in minesToCheck {
                     if item.hasMine == true {
                         minesData[(cellList.count) - 1].mineCounter += 1
