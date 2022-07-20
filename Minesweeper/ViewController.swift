@@ -206,7 +206,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for mineData in minesData {
             
             // first row, first column
-            if mineData == minesData[0] {
+            if mineData == minesData[0] && minesData[0].hasMine == false {
                 switch (minesData[1].hasMine, minesData[intNumberOfItemsPerRow].hasMine, minesData[numberOfItemsPerRowPlusOne].hasMine) {
                 case(true, true, true):
                     minesData[0].mineCounter = 3
@@ -229,7 +229,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             }
             
             // first row, last column
-            if mineData == minesData[numberOfItemsPerRowMinusOne] {
+            if mineData == minesData[numberOfItemsPerRowMinusOne] && minesData[numberOfItemsPerRowMinusOne].hasMine == false {
                 switch (minesData[(numberOfItemsPerRowMinusOne) - (1)].hasMine, minesData[(numberOfItemsPerRowMinusOne) + (numberOfItemsPerRowMinusOne)].hasMine, minesData[(numberOfItemsPerRowMinusOne) + (intNumberOfItemsPerRow)].hasMine) {
                 case(true, true, true):
                     minesData[numberOfItemsPerRowMinusOne].mineCounter = 3
@@ -253,7 +253,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             
             
             // last row, first column
-            if mineData == minesData[(cellList.count) - (intNumberOfItemsPerRow)] {
+            if mineData == minesData[(cellList.count) - (intNumberOfItemsPerRow)] && minesData[(cellList.count) - (intNumberOfItemsPerRow)].hasMine == false {
                 let minesToCheck = [minesData[(cellList.count) - (intNumberOfItemsPerRow * 2)], minesData[(cellList.count) - (intNumberOfItemsPerRow * 2) + 1], minesData[(cellList.count) - numberOfItemsPerRowMinusOne]] // 15, 16, 21
                 for item in minesToCheck {
                     if item.hasMine == true {
@@ -264,7 +264,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             }
             
             // last row, last column
-            if mineData == minesData[(cellList.count) - 1] {
+            if mineData == minesData[(cellList.count) - 1] && minesData[(cellList.count) - 1].hasMine == false {
                 let minesToCheck = [minesData[(cellList.count) - 2], minesData[(cellList.count) - numberOfItemsPerRowPlusOne - 1], minesData[(cellList.count) - numberOfItemsPerRowPlusOne]] // 23, 18, 19
                 for item in minesToCheck {
                     if item.hasMine == true {
@@ -333,5 +333,6 @@ struct MineData: Equatable {
  
  donar nom a cada tipus de grup de cela xq a l'iniciar el joc s'agrupin
  calcular les sumes i restes en base al valor de numberOfItemsPerRow (ie numberOfItemsPerRow + 1 = 6), pq s'adapti a grids amb mes celes.
+ s'ha de cridar calculateNearbyMines() abans de pintar el UI o fer reloadData abans que el jugador pugui jugar
  PREGUNTAR A MAKABRE SI numberOfItemsPerRow el podem calcular abans de viewDidLoad
  */
