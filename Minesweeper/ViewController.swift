@@ -274,6 +274,14 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 print("Cela 24: \(minesData[(cellList.count) - 1].mineCounter)")
             }
         }
+        
+        // cells first row
+        let firstRow = minesData[1..<numberOfItemsPerRowMinusOne]
+        print(firstRow.count)
+        
+        // cells last row
+        let lastRow = minesData[cellList.count - numberOfItemsPerRowMinusOne..<cellList.count - 1]
+        print(lastRow.count)
     }
     
 } // last brace
