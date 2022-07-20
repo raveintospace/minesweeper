@@ -282,7 +282,16 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         // cells last row
         let lastRow = minesData[cellList.count - numberOfItemsPerRowMinusOne..<cellList.count - 1]
         print(lastRow.count)
-    }
+        
+        // cells first column - find what numbers are % 5 in 25
+        let numberOfCells = cellList.count
+        for number in numberOfCells {
+            if number > 0 && number < 25 {
+                print(number)
+            }
+        }
+        
+    } // end of function
     
 } // last brace
 
