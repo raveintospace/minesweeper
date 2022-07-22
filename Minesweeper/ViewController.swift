@@ -296,13 +296,28 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     squareMultiplier += intNumberOfItemsPerRow
                 }
                 if loop > lastRow.count {
-                    return
+                    break
                 }
             }
         }
         
         // cells last column
-        
+        var lastColumn = [MineData]()
+        var squareMultiplierLastColumn = intNumberOfItemsPerRow
+        var loopLastColumn = 1
+        while loopLastColumn < lastRow.count {
+            for mineData in minesData {
+                if mineData == minesData[(numberOfItemsPerRowMinusOne) + (squareMultiplierLastColumn)] {
+                    print("fato trobat last column & \((numberOfItemsPerRowMinusOne) + (squareMultiplierLastColumn)) & \(loopLastColumn)")
+                    loopLastColumn += 1
+                    lastColumn.append(mineData)
+                    squareMultiplierLastColumn += intNumberOfItemsPerRow
+                }
+                if loopLastColumn > lastRow.count {
+                    break
+                }
+            }
+        }
         
     } // end of function callNearbyMines
     
