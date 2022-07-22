@@ -283,20 +283,25 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let lastRow = minesData[cellList.count - numberOfItemsPerRowMinusOne..<cellList.count - 1]
         print(lastRow.count)
         
-        // cells first column - find what numbers are % 5 in 25
+        // cells first column
         var firstColumn = [MineData]()
         var squareMultiplier = intNumberOfItemsPerRow
         var loop = 1
-        if loop < lastRow.count {
+        while loop < lastRow.count {
             for mineData in minesData {
                 if mineData == minesData[squareMultiplier] {
                     print("fato trobat & \(squareMultiplier) & \(loop)")
+                    loop += 1
                     firstColumn.append(mineData)
                     squareMultiplier += intNumberOfItemsPerRow
-                    loop += 1
+                }
+                if loop > lastRow.count {
+                    return
                 }
             }
         }
+        
+        // cells last column
         
         
     } // end of function callNearbyMines
