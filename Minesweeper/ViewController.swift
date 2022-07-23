@@ -113,9 +113,9 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let mineCell = minesData[indexPath.item]
         if mineCell.hasMine == true {
-            cell.bg.image = UIImage(named: imageData[0])
+            cell.bg.image = UIImage(named: mineCell.imagePath)
         } else {
-            cell.bg.image = UIImage(named: imageData[2])
+            cell.bg.image = UIImage(named: imageData[mineCell.mineCounter])
         }
         
         return cell
@@ -189,7 +189,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         for item in cellList {
             if item == false {  // append to MinesData, setting the string for the imagePath. 5 different indicators
-                minesData.append(MineData(hasMine: false, imagePath: "one.png"))
+                minesData.append(MineData(hasMine: false, imagePath: "1.png"))
             } else {    // append to MinesData, setting the string for the bomb image
                 minesData.append(MineData(hasMine: true, imagePath: "bomb.png"))
             }
@@ -226,6 +226,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     minesData[0].mineCounter = 0
                 }
                 print("Cela 0: \(minesData[0].mineCounter)")
+                collectionView.reloadData()
             }
             
             // first row, last column
@@ -249,6 +250,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     minesData[numberOfItemsPerRowMinusOne].mineCounter = 0
                 }
                 print("Cela 4: \(minesData[numberOfItemsPerRowMinusOne].mineCounter)")
+                collectionView.reloadData()
             }
             
             
@@ -261,6 +263,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     }
                 }
                 print("Cela 20: \(minesData[(cellList.count) - (intNumberOfItemsPerRow)].mineCounter)")
+                collectionView.reloadData()
             }
             
             // last row, last column
@@ -272,12 +275,15 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     }
                 }
                 print("Cela 24: \(minesData[(cellList.count) - 1].mineCounter)")
+                collectionView.reloadData()
             }
         }
         
         // cells first row
         let firstRow = minesData[1..<numberOfItemsPerRowMinusOne]
         print(firstRow.count)
+        
+            // check nearby mines for each of the 3 cells of firstRow
         
         // cells last row
         let lastRow = minesData[cellList.count - numberOfItemsPerRowMinusOne..<cellList.count - 1]
@@ -341,7 +347,7 @@ extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swif
 
 struct MineData: Equatable {
     let hasMine: Bool
-    let imagePath: String  // an image showing a bomb or a number with nearby bombs
+    var imagePath: String  // an image showing a bomb or a number with nearby bombs
     var mineCounter = 0
 }
 
