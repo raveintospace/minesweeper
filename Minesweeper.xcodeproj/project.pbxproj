@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		341DAECF288DA6EC00BEC0FB /* SquaredMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341DAECE288DA6EC00BEC0FB /* SquaredMatrix.swift */; };
+		341DAED1288DB32700BEC0FB /* MakabreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341DAED0288DB32700BEC0FB /* MakabreViewController.swift */; };
 		34547D3C2871DF68003531B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34547D3B2871DF68003531B4 /* AppDelegate.swift */; };
 		34547D3E2871DF68003531B4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34547D3D2871DF68003531B4 /* SceneDelegate.swift */; };
 		34547D402871DF68003531B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34547D3F2871DF68003531B4 /* ViewController.swift */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		341DAECE288DA6EC00BEC0FB /* SquaredMatrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquaredMatrix.swift; sourceTree = "<group>"; };
+		341DAED0288DB32700BEC0FB /* MakabreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakabreViewController.swift; sourceTree = "<group>"; };
 		34547D382871DF68003531B4 /* Minesweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Minesweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34547D3B2871DF68003531B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		34547D3D2871DF68003531B4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				34547D3B2871DF68003531B4 /* AppDelegate.swift */,
 				34547D3D2871DF68003531B4 /* SceneDelegate.swift */,
 				34547D3F2871DF68003531B4 /* ViewController.swift */,
+				341DAED0288DB32700BEC0FB /* MakabreViewController.swift */,
 				34A070D028733E4C00081DEB /* SquareCell.swift */,
 				341DAECE288DA6EC00BEC0FB /* SquaredMatrix.swift */,
 				34547D442871DF6D003531B4 /* Assets.xcassets */,
@@ -184,6 +187,7 @@
 				341DAECF288DA6EC00BEC0FB /* SquaredMatrix.swift in Sources */,
 				34547D402871DF68003531B4 /* ViewController.swift in Sources */,
 				34547D3C2871DF68003531B4 /* AppDelegate.swift in Sources */,
+				341DAED1288DB32700BEC0FB /* MakabreViewController.swift in Sources */,
 				34547D3E2871DF68003531B4 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

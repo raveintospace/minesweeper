@@ -7,6 +7,10 @@ enum MatrixError: Error {
 struct SquaredMatrix<Element> {
     private let container: [[Element]]
     
+    var squared: Int {
+        container.count
+    }
+    
     init(_ array: [Element]) throws {
         self.container = try array.splitArrayIntoSquaredSubarrays()
     }
@@ -21,7 +25,7 @@ struct SquaredMatrix<Element> {
 
 private extension Array  {
     func splitArrayIntoSquaredSubarrays() throws -> [[Element]] {
-        guard count.isPerfectSquare else {
+        guard self.count.isPerfectSquare else {
             throw MatrixError.valuesNotSquared
         }
         var result: [[Element]] = []

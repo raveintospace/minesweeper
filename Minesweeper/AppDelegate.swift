@@ -15,8 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         // creation of the mainVC
+        
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = UINavigationController(rootViewController: ViewController())
+
+        do {
+            let viewController = try MakabreViewController()
+            window?.rootViewController = UINavigationController(rootViewController: viewController)
+        } catch {
+            let alert = UIAlertController(title: "TODO MAL", message: "Els valors no permeten montar una matriu quadrada", preferredStyle: .alert)
+            window?.rootViewController = alert
+        }
+        
         window?.makeKeyAndVisible()
 
         return true

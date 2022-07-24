@@ -16,6 +16,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     private var imageData = [String]()      // array of strings with our images names
     
     private var cellList = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false] // add one bool to check hasPerfectSquare() works
+   
     private var minesCount: Int {
         cellList.filter{ $0 == true }.count
     }

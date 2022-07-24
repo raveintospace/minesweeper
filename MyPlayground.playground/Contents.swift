@@ -2,22 +2,16 @@ import UIKit
 
 import Foundation
 
-struct SquaredMatrix<Element> {
-    private let container: [[Element]]
-    
-    init(_ array: [Element]) throws {
-        // TODO: @hardschool Check array.count es arrel quadrada, else throws
-        // TODO: @hardschool Split array en subarrais del mateix tamany
-        container = []
-    }
-    
-    subscript(row: Int, column: Int) -> Element? {
-        return nil
-    }
-}
+let numberOfItemsPerRow = Double(5)
+let spacing = 16.0
 
-let boolMatrix = try SquaredMatrix([true, true])
-let intMatrix = try SquaredMatrix([1, 2])
-let stringMatrix = try SquaredMatrix(["1", "2"])
-
-let bool = boolMatrix[0, 1]
+let totalSpacing = (2 * spacing) + (numberOfItemsPerRow - 1) * spacing
+print(totalSpacing)
+//if let collection = self.collectionView {
+//    let width = (collection.bounds.width - totalSpacing)/numberOfItemsPerRow
+//    // print(collection.bounds.width)
+//    print(totalSpacing)
+//    return CGSize(width: width, height: width)
+//} else {
+//    return CGSize(width: 0, height: 0)
+//}
