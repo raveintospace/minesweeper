@@ -1,18 +1,18 @@
 import UIKit
 
 final class MakabreViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    private let valueMatrix: SquaredMatrix<Bool>
+    private let valueMatrix: SquaredMatrix<Bool>    // an array of arrays of bools
     
     var gameTimer: Timer?
     
     private var minesData = [MineData]()    // array of MineData
     
     private var imageData = [String]()      // array of strings with our images names
-    
-     // add one bool to check hasPerfectSquare() works
    
-    private var minesCount: Int {
-        999
+    private var minesCount: Int = 0 {
+        didSet {
+            rightBarButtonItem.title = "Mines left: \(minesCount)"
+        }
     }
     
     private lazy var rightBarButtonItem: UIBarButtonItem = {
@@ -22,17 +22,12 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         UIBarButtonItem(title: "Time: 00:00", style: .plain, target: self, action: nil)
     }()
     
-    private var mines = 0 {
-        didSet {
-            rightBarButtonItem.title = "Mines left: \(minesCount)"
-         }
-     }
     private var time: Double = 0
     
     private let spacing: CGFloat = 16.0     // the space between the cells
     
     init(values: [Bool] = [false, true, false, false, false, true, true, false, false, false, false, true, false, true, false, false, false, true, false, false, false, true, true, false, false]) throws {
-        self.valueMatrix = try SquaredMatrix(values)
+        self.valueMatrix = try SquaredMatrix(values)    // create an array of arrays using "values"
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
@@ -60,14 +55,14 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     
     // how many squares our board has
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Int(pow(Double(valueMatrix.squared), Double(2)))
+        return Int(pow(Double(valueMatrix.squared), Double(2)))     // square the number of arrays our array has (5*5, 6*6...)
     }
     
     // how our layout looks equally spaced
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let numberOfItemsPerRow = Double(valueMatrix.squared)
+        let numberOfItemsPerRow = Double(valueMatrix.squared)   // 5
         
-        let totalSpacing = (2 * spacing) + (numberOfItemsPerRow - 1) * spacing // Total spacing in a row, pendent consultar makabre
+        let totalSpacing = (2 * spacing) + (numberOfItemsPerRow - 1) * spacing // Total spacing in a row (32 + 4*16) -> 32+64 = 96
         
         if let collection = self.collectionView {
             let width = (collection.bounds.width - totalSpacing)/numberOfItemsPerRow
@@ -82,20 +77,22 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Square", for: indexPath) as? SquareCell else { fatalError("Unable to dequeue SquareCell")
         }
         
-        let row = indexPath.item / valueMatrix.squared
+        let row = indexPath.item / valueMatrix.squared      // will iterate all the content of our collectionView
         let column = indexPath.item % valueMatrix.squared
         
-        if let hasMine = valueMatrix[row, column] {
+        if let hasMine = valueMatrix[row, column] { // constant hasMine checks if there's a mine in a cell with X row and Y column
             if hasMine {
                 cell.bg.image = UIImage(named: "bomb.png")
+                self.minesCount += 1
             } else {
-                cell.bg.image = UIImage(named: "\(checkMineCount(row: row, column: column)).png")
+                cell.bg.image = UIImage(named: "\(checkMineCount(row: row, column: column)).png")   // the value of mines
             }
         }
         
         return cell
     }
     
+    // func to check mines in the nearby cells for each cell
     private func checkMineCount(row: Int, column: Int) -> Int {
         let valuesToCheck = [valueMatrix[row-1, column-1], valueMatrix[row-1, column], valueMatrix[row-1, column+1],
                              valueMatrix[row, column-1], valueMatrix[row, column+1],

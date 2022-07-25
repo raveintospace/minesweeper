@@ -4,6 +4,7 @@
 //
 //  Created by Uri on 4/7/22.
 // https://medium.com/@max.codes/programmatic-custom-collectionview-cell-subclass-in-swift-5-xcode-10-291f8d41fdb1
+
 import UIKit
 
 class SquareCell: UICollectionViewCell {
