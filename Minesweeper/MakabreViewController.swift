@@ -45,6 +45,8 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     private func configureCollectionView() {
         collectionView.register(SquareCell.self, forCellWithReuseIdentifier: "Square") // registration of our custom cell
         
+        collectionView.backgroundColor = UIColor.black
+        
         // code to configure our cells layout - https://medium.com/@NickBabo/equally-spaced-uicollectionview-cells-6e60ce8d457b
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
@@ -72,7 +74,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         }
     }
     
-    // how our squares look - phase 2
+    // how our squares look
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Square", for: indexPath) as? SquareCell else { fatalError("Unable to dequeue SquareCell")
         }
@@ -83,13 +85,19 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         if let hasMine = valueMatrix[row, column] { // constant hasMine checks if there's a mine in a cell with X row and Y column
             if hasMine {
                 cell.bg.image = UIImage(named: "bomb.png")
+                // cell.cv.isHidden = true
                 self.minesCount += 1
             } else {
                 cell.bg.image = UIImage(named: "\(checkMineCount(row: row, column: column)).png")   // the value of mines
+                // cell.cv.alpha = 0
             }
         }
         
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // we will have to append our cells to an array ?
     }
     
     // func to check mines in the nearby cells for each cell

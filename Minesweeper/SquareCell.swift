@@ -16,18 +16,36 @@ class SquareCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.image = UIImage()
         imageView.layer.cornerRadius = 12
-        imageView.backgroundColor = UIColor.gray
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.yellow.cgColor
         return imageView
+    }()
+    
+    let cv: UICollectionViewCell = {
+        let cellView = UICollectionViewCell()
+        cellView.translatesAutoresizingMaskIntoConstraints = false
+        cellView.contentMode = .scaleAspectFill
+        cellView.clipsToBounds = true
+        cellView.backgroundColor = UIColor.darkGray
+        cellView.layer.borderWidth = 3
+        cellView.layer.borderColor = UIColor.white.cgColor
+        return cellView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
         contentView.addSubview(bg)
+        contentView.addSubview(cv)
         
         bg.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         bg.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         bg.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
         bg.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        
+        cv.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        cv.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        cv.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        cv.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
