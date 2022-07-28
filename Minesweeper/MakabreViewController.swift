@@ -3,11 +3,9 @@ import UIKit
 final class MakabreViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     private let valueMatrix: SquaredMatrix<Bool>    // an array of arrays of bools
     
+    private var squareCells = [SquareCell]()
+    
     var gameTimer: Timer?
-    
-    
-    
-    // private var imageData = [String]()      // array of strings with our images names
    
     private var minesCount: Int = 0 {
         didSet {
@@ -92,12 +90,14 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
                 // cell.cv.alpha = 0
             }
         }
+        squareCells.append(cell)
+        print("Total squarecells: \(squareCells.count)")
         
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // we will have to append our cells to an array ?
+        // pending
     }
     
     // func to check mines in the nearby cells for each cell
@@ -152,7 +152,17 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     }
 }
 
-struct CellData {
-    let hasAMine: Bool
-    let mineCounter: Int
-}
+
+/*
+ Logic
+ 
+ didSelectItemAt: show the image when the cell is clicked
+    
+        if has a bomb = game over = stop timer, minecounter -= 1, offer a restart (randomize the array valueMatrix
+        else = the game goes on and the image does not disappear
+ 
+ try on friday: assign the images when didselectitemat
+ 
+ optional: mark the bombs?
+ 
+ */
