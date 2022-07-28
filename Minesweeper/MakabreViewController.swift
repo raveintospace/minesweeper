@@ -5,9 +5,9 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     
     var gameTimer: Timer?
     
-    private var minesData = [MineData]()    // array of MineData
     
-    private var imageData = [String]()      // array of strings with our images names
+    
+    // private var imageData = [String]()      // array of strings with our images names
    
     private var minesCount: Int = 0 {
         didSet {
@@ -150,4 +150,9 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         leftBarButtonItem.title = "Time: \(timeString(time: time))"
         // print(timeString(time: time))
     }
+}
+
+struct CellData {
+    let hasAMine: Bool
+    let mineCounter: Int
 }
