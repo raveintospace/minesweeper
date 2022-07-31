@@ -8,7 +8,6 @@
 import UIKit
 
 class SquareCell: UICollectionViewCell {
-    
     let bg: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -21,10 +20,9 @@ class SquareCell: UICollectionViewCell {
         return imageView
     }()
     
-    let cv: UICollectionViewCell = {
-        let cellView = UICollectionViewCell()
+    let cv: UIView = {
+        let cellView = UIView()
         cellView.translatesAutoresizingMaskIntoConstraints = false
-        cellView.contentMode = .scaleAspectFill
         cellView.clipsToBounds = true
         cellView.backgroundColor = UIColor.darkGray
         cellView.layer.borderWidth = 3
@@ -50,5 +48,9 @@ class SquareCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        bg.image = nil
     }
 }

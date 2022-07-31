@@ -145,7 +145,9 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         })
         ac.addAction(UIAlertAction(title: "No", style: .destructive) {    // does nothing //.destructive tints the button to red
             [weak self] _ in
-            self?.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.timerCounter), userInfo: nil, repeats: true)       // pending to check self! with Makabre
+            guard let self = self else { return }
+            
+            self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.timerCounter), userInfo: nil, repeats: true)       // pending to check self with Makabre
         })
         present(ac, animated: true)
     }
