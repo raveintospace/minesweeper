@@ -25,7 +25,7 @@ struct SquaredMatrix<Element> {
 
 private extension Array  {
     func splitArrayIntoSquaredSubarrays() throws -> [[Element]] {
-        guard self.count.isPerfectSquare else {     // check if the array we have has a perfect square
+        guard self.count.isPerfectSquare else {     // check if the array(self) we have has a perfect square
             throw MatrixError.valuesNotSquared      // throw the error if it has no perfect square
         }
         var result: [[Element]] = []

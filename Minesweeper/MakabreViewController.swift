@@ -1,5 +1,6 @@
 import UIKit
 
+// class to be used in didSelectItemAt
 private class CellModel {
     let hasMine: Bool
     var isDiscovered = false
@@ -12,14 +13,14 @@ private class CellModel {
 final class MakabreViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     private var valueMatrix: SquaredMatrix<CellModel>? {
         didSet {
-            collectionView.reloadData()
+            collectionView.reloadData()     // everytime we create start a game
         }
     }
+    
     private let numberOfMines: Int
     private let totalMinefields: Int
     
-    private var isWinGameAlertDisplayed = false
-    
+    private var isWinGameAlertDisplayed = false     // to avoid being shown more than once
     
     var gameTimer: Timer?
     
@@ -73,7 +74,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     
     // how our layout looks equally spaced
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let valueMatrix = valueMatrix else { return CGSize(width: 0, height: 0) }
+        guard let valueMatrix = valueMatrix else { return CGSize(width: 0, height: 0) } // check if valueMatrix exists
 
         let numberOfItemsPerRow = Double(valueMatrix.squared)   // 5
         
@@ -96,17 +97,17 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         let row = getRowAndColumn(from: indexPath).row
         let column = getRowAndColumn(from: indexPath).column
         
-        if let cellModel = valueMatrix[row, column] { // constant hasMine checks if there's a mine in a cell with X row and Y column
+        if let cellModel = valueMatrix[row, column] { // checks if there's a mine in a cell with X row and Y column
             if cellModel.hasMine {
                 cell.bg.image = UIImage(named: "bomb.png")
             } else {
                 let mineCount = checkMineCount(row: row, column: column)
-                if mineCount != 0 {
+                if mineCount != 0 {     // if it's 0 we don't pain any image
                     cell.bg.image = UIImage(named: "\(mineCount).png")   // the value of mines
                 }
             }
             
-            cell.cv.isHidden = cellModel.isDiscovered
+            cell.cv.isHidden = cellModel.isDiscovered // assign to isHidden the value of isDiscovered (false by default)
         }
         
         return cell
@@ -123,11 +124,11 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     
     private func uncoverMinefield(row: Int, column: Int) {
         if let valueMatrix = valueMatrix, let cellModel = valueMatrix[row, column], !cellModel.isDiscovered {
-            cellModel.isDiscovered = true
+            cellModel.isDiscovered = true       // true means that we hide the CV and the image under it is shown
             
             if cellModel.hasMine {
                 gameOver()
-            } else if checkMineCount(row: row, column: column) == 0 {
+            } else if checkMineCount(row: row, column: column) == 0 {       // cascade mode for cells with 0 mineCount
                 uncoverMinefield(row: row-1, column: column-1)
                 uncoverMinefield(row: row-1, column: column)
                 uncoverMinefield(row: row-1, column: column+1)
@@ -142,17 +143,19 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         }
     }
     
+    // to check if we have discovered all the cells with no bombs = win the game
     private func checkIfIBeatTheGame() {
         if !isWinGameAlertDisplayed {
-            var count = 0
+            var count = 0       // number of non discovered cells, reseted to 0 everytime it is called
             var row = 0
             var column = 0
-            while valueMatrix?[row,column] != nil {  // -2, -2
-                while valueMatrix?[row,column] != nil {
+            while valueMatrix?[row,column] != nil {  // -1, -1
+                while valueMatrix?[row,column] != nil {     // -1, 5
                     count = valueMatrix?[row,column]?.isDiscovered == false ? count + 1 : count
-                    column += 1
+                    print(count)
+                    column += 1     // to check each line
                 }
-                column = 0
+                column = 0      // once the line is checked, we jump to the line below
                 row += 1
             }
             
@@ -165,7 +168,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     
     private func getRowAndColumn(from indexPath: IndexPath) -> (row: Int, column: Int) {
         guard let valueMatrix = valueMatrix else { return (-1, -1) }
-        let row = indexPath.item / valueMatrix.squared      // will iterate all the content of our collectionView
+        let row = indexPath.item / valueMatrix.squared
         let column = indexPath.item % valueMatrix.squared
         
         return (row, column)
@@ -211,7 +214,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     
     private func gameOver() { // method to reset the game
         gameTimer?.invalidate()
-        let ac = UIAlertController(title: "You lost!", message: "Fill, caca al cap", preferredStyle: .alert)
+        let ac = UIAlertController(title: "You lose!", message: "A bomb killed you", preferredStyle: .alert)
 
         ac.addAction(UIAlertAction(title: "Play again", style: .default) {     // resets the game
             [weak self] _ in
@@ -222,7 +225,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     
     private func beatTheGame() { // method to reset the game
         gameTimer?.invalidate()
-        let ac = UIAlertController(title: "You won!!", message: "Fill, caca al cap", preferredStyle: .alert)
+        let ac = UIAlertController(title: "You win!", message: "You avoided all the bombs", preferredStyle: .alert)
 
         ac.addAction(UIAlertAction(title: "Play again", style: .default) {     // resets the game
             [weak self] _ in
@@ -234,7 +237,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     private func startGame() {
         var values = Array(repeating: true, count: numberOfMines) + Array(repeating: false, count: totalMinefields - numberOfMines)
         values.shuffle()
-        valueMatrix = try? SquaredMatrix(values.map { CellModel(hasMine: $0) })    // create an array of arrays using "values"
+        valueMatrix = try? SquaredMatrix(values.map { CellModel(hasMine: $0) })    // create an array of arrays using the bool value of hasMine, we obtain an array of trues & falses
         time = 0
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerCounter), userInfo: nil, repeats: true)
         isWinGameAlertDisplayed = false
@@ -254,15 +257,26 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     }
 }
 
+extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swift-3-find-if-the-number-is-a-perfect-square
+    var isPerfectSquare: Bool {
+        guard self >= .zero else { return false }
+        var sum: Self = .zero
+        var count: Self = .zero
+        var squareRoot: Self = .zero
+        while sum < self {
+            count += 2
+            sum += count
+            squareRoot += 1
+        }
+        return squareRoot * squareRoot == self
+    }
+}
+
 
 /*
- Logic
+ TO DO
  
- didSelectItemAt: show the image when the cell is clicked
-    
-        if has a bomb = game over = stop timer, minecounter -= 1, offer a restart (randomize the array valueMatrix)
-        else = the game goes on and the image does not disappear
-  
- optional: mark the bombs?
+ alert controller for the user to choose how many cells and bombs
+ the alert has to check that the number input by the user hasperfectSquare
  
  */

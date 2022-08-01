@@ -333,20 +333,20 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
 } // last brace
 
 // extension to check if an Int has a perfectSquare
-extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swift-3-find-if-the-number-is-a-perfect-square
-    var isPerfectSquare: Bool {
-        guard self >= .zero else { return false }
-        var sum: Self = .zero
-        var count: Self = .zero
-        var squareRoot: Self = .zero
-        while sum < self {
-            count += 2
-            sum += count
-            squareRoot += 1
-        }
-        return squareRoot * squareRoot == self
-    }
-}
+//extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swift-3-find-if-the-number-is-a-perfect-square
+//    var isPerfectSquare: Bool {
+//        guard self >= .zero else { return false }
+//        var sum: Self = .zero
+//        var count: Self = .zero
+//        var squareRoot: Self = .zero
+//        while sum < self {
+//            count += 2
+//            sum += count
+//            squareRoot += 1
+//        }
+//        return squareRoot * squareRoot == self
+//    }
+//}
 
 struct MineData: Equatable {
     let hasMine: Bool
