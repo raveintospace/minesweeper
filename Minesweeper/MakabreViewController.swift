@@ -193,8 +193,9 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         
         let resetButton = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(resetGame))
         let editGame = UIBarButtonItem(title: "Edit mines", style: .plain, target: self, action: #selector(editMines))
+        let editCells = UIBarButtonItem(title: "Edit cells", style: .plain, target: self, action: #selector(editCells))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) // used to center resetButton
-        toolbarItems = [spacer, resetButton, spacer, editGame, spacer]
+        toolbarItems = [resetButton, spacer, editGame, spacer, editCells]
         navigationController?.isToolbarHidden = false
     }
     
@@ -227,6 +228,31 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
                 self?.numberOfMines = newNumberOfMines
                 print(newNumberOfMines)
                 print(self?.totalMinefields ?? 25)
+                self?.configureNavigation()
+                self?.startGame()
+            }
+        })
+        
+        ac.addAction(UIAlertAction(title: "Cancel", style: .destructive))
+        
+        present(ac, animated: true)
+    }
+    
+    @objc func editCells() {
+        gameTimer?.invalidate()
+        let ac = UIAlertController(title: "Enter the number of cells for your game", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        
+        ac.addAction(UIAlertAction(title: "Save", style: .default) {
+            [weak self, weak ac] action in
+            guard let newNumberOfCells = Int(ac?.textFields?[0].text ?? "0") else { return }
+            if newNumberOfCells <= 0 || newNumberOfCells <= self?.numberOfMines ?? 1 {
+                self?.editCells()
+            } else if !newNumberOfCells.isPerfectSquare {
+                self?.editCells()
+            } else {
+                self?.totalMinefields = newNumberOfCells
+                print("newNumberOfCells \(newNumberOfCells)")
                 self?.configureNavigation()
                 self?.startGame()
             }
@@ -301,7 +327,7 @@ extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swif
 /*
  TO DO
  
- alert controller for the user to choose how many cells and bombs
- the alert has to check that the number input by the user hasperfectSquare
+how to adapt the cells for 36 or more cells
+device rotation
  
  */
