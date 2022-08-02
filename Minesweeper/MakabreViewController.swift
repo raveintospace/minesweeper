@@ -152,7 +152,6 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
             while valueMatrix?[row,column] != nil {  // -1, -1
                 while valueMatrix?[row,column] != nil {     // -1, 5
                     count = valueMatrix?[row,column]?.isDiscovered == false ? count + 1 : count
-                    print(count)
                     column += 1     // to check each line
                 }
                 column = 0      // once the line is checked, we jump to the line below
@@ -192,10 +191,10 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         rightBarButtonItem.title = "Mines: \(numberOfMines)"
         
         let resetButton = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(resetGame))
-        let editGame = UIBarButtonItem(title: "Edit mines", style: .plain, target: self, action: #selector(editMines))
+        let editMines = UIBarButtonItem(title: "Edit mines", style: .plain, target: self, action: #selector(editMines))
         let editCells = UIBarButtonItem(title: "Edit cells", style: .plain, target: self, action: #selector(editCells))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) // used to center resetButton
-        toolbarItems = [resetButton, spacer, editGame, spacer, editCells]
+        toolbarItems = [editCells, spacer, resetButton, spacer, editMines]
         navigationController?.isToolbarHidden = false
     }
     
