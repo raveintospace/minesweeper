@@ -17,15 +17,15 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         }
     }
     
-    private let numberOfMines: Int
-    private let totalMinefields: Int
+    private var numberOfMines: Int
+    private var totalMinefields: Int
     
     private var isWinGameAlertDisplayed = false     // to avoid being shown more than once
     
     var gameTimer: Timer?
     
     private lazy var rightBarButtonItem: UIBarButtonItem = {
-        UIBarButtonItem(title: "Mines left: \(numberOfMines)", style: .plain, target: self, action: nil)
+        UIBarButtonItem(title: "Mines: \(numberOfMines)", style: .plain, target: self, action: nil)
     }()
     private lazy var leftBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(title: "Time: 00:00", style: .plain, target: self, action: nil)
@@ -189,11 +189,12 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         navigationItem.leftBarButtonItem = leftBarButtonItem
         navigationItem.rightBarButtonItem = rightBarButtonItem
         
-        rightBarButtonItem.title = "Mines left: \(numberOfMines)"
+        rightBarButtonItem.title = "Mines: \(numberOfMines)"
         
         let resetButton = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(resetGame))
+        let editGame = UIBarButtonItem(title: "Edit mines", style: .plain, target: self, action: #selector(editMines))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) // used to center resetButton
-        toolbarItems = [spacer, resetButton, spacer]
+        toolbarItems = [spacer, resetButton, spacer, editGame, spacer]
         navigationController?.isToolbarHidden = false
     }
     
@@ -209,6 +210,30 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
             [weak self] _ in
             self?.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.timerCounter), userInfo: nil, repeats: true)       // pending to check self! with Makabre
         })
+        present(ac, animated: true)
+    }
+    
+    @objc func editMines() {
+        gameTimer?.invalidate()
+        let ac = UIAlertController(title: "Enter the number of mines for your game", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        
+        ac.addAction(UIAlertAction(title: "Save", style: .default) {
+            [weak self, weak ac] action in
+            guard let newNumberOfMines = Int(ac?.textFields?[0].text ?? "0") else { return }
+            if newNumberOfMines <= 0 || newNumberOfMines >= self?.totalMinefields ?? 25 {
+                self?.editMines()
+            } else {
+                self?.numberOfMines = newNumberOfMines
+                print(newNumberOfMines)
+                print(self?.totalMinefields ?? 25)
+                self?.configureNavigation()
+                self?.startGame()
+            }
+        })
+        
+        ac.addAction(UIAlertAction(title: "Cancel", style: .destructive))
+        
         present(ac, animated: true)
     }
     
