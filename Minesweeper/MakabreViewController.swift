@@ -167,8 +167,8 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     
     private func getRowAndColumn(from indexPath: IndexPath) -> (row: Int, column: Int) {
         guard let valueMatrix = valueMatrix else { return (-1, -1) }
-        let row = indexPath.item / valueMatrix.squared
-        let column = indexPath.item % valueMatrix.squared
+        let row = indexPath.item / valueMatrix.squared                  // 1 / 5 = 0
+        let column = indexPath.item % valueMatrix.squared               // 1 % 5 = 1
         
         return (row, column)
     }
