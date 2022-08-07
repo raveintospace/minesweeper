@@ -1,6 +1,6 @@
 import UIKit
 
-// class to be used in didSelectItemAt
+// class to be used in didSelectItemAt -- BL
 private class CellModel {
     let hasMine: Bool
     var isDiscovered = false
@@ -11,18 +11,20 @@ private class CellModel {
 }
 
 final class MakabreViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    private var valueMatrix: SquaredMatrix<CellModel>? {
+    private let viewModel = MakabreViewModel()
+    
+    private var valueMatrix: SquaredMatrix<CellModel>? {    // BL
         didSet {
-            collectionView.reloadData()     // everytime we create start a game
+            collectionView.reloadData()     // everytime we create start a game -- UI
         }
     }
     
-    private var numberOfMines: Int
-    private var totalMinefields: Int
+    private var numberOfMines: Int      // BL
+    private var totalMinefields: Int    // BL
     
-    private var isWinGameAlertDisplayed = false     // to avoid being shown more than once
+    private var isWinGameAlertDisplayed = false     // to avoid being shown more than once -- BL
     
-    var gameTimer: Timer?
+    var gameTimer: Timer?   // BL
     
     private lazy var rightBarButtonItem: UIBarButtonItem = {
         UIBarButtonItem(title: "Mines: \(numberOfMines)", style: .plain, target: self, action: nil)
@@ -31,11 +33,11 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         UIBarButtonItem(title: "Time: 00:00", style: .plain, target: self, action: nil)
     }()
     
-    private var time: Double = 0
+    private var time: Double = 0    // BL
     
     private let spacing: CGFloat = 16.0     // the space between the cells
     
-    init(numberOfMines: Int = 2, totalMinefields: Int = 25) {
+    init(numberOfMines: Int = 2, totalMinefields: Int = 25) { // BL
         self.numberOfMines = numberOfMines
         self.totalMinefields = totalMinefields
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
@@ -82,7 +84,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         
         if let collection = self.collectionView {
             let width = (collection.bounds.width - totalSpacing)/numberOfItemsPerRow
-            return CGSize(width: width, height: width)
+            return CGSize(width: width.rounded(.down), height: width.rounded(.down))
         } else {
             return CGSize(width: 0, height: 0)
         }
@@ -94,7 +96,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
               let valueMatrix = valueMatrix else { fatalError("Unable to dequeue SquareCell")
         }
         
-        let row = getRowAndColumn(from: indexPath).row
+        let row = getRowAndColumn(from: indexPath).row   // BL
         let column = getRowAndColumn(from: indexPath).column
         
         if let cellModel = valueMatrix[row, column] { // checks if there's a mine in a cell with X row and Y column
@@ -144,7 +146,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     }
     
     // to check if we have discovered all the cells with no bombs = win the game
-    private func checkIfIBeatTheGame() {
+    private func checkIfIBeatTheGame() {   // BL
         if !isWinGameAlertDisplayed {
             var count = 0       // number of non discovered cells, reseted to 0 everytime it is called
             var row = 0
@@ -165,7 +167,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         }
     }
     
-    private func getRowAndColumn(from indexPath: IndexPath) -> (row: Int, column: Int) {
+    private func getRowAndColumn(from indexPath: IndexPath) -> (row: Int, column: Int) {   // BL
         guard let valueMatrix = valueMatrix else { return (-1, -1) }
         let row = indexPath.item / valueMatrix.squared                  // 1 / 5 = 0
         let column = indexPath.item % valueMatrix.squared               // 1 % 5 = 1
@@ -174,7 +176,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     }
     
     // func to check mines in the nearby cells for each cell
-    private func checkMineCount(row: Int, column: Int) -> Int {
+    private func checkMineCount(row: Int, column: Int) -> Int {   // BL
         guard let valueMatrix = valueMatrix else { return -1 }
         let valuesToCheck = [valueMatrix[row-1, column-1], valueMatrix[row-1, column], valueMatrix[row-1, column+1],
                              valueMatrix[row, column-1], valueMatrix[row, column+1],
@@ -198,29 +200,14 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         navigationController?.isToolbarHidden = false
     }
     
-    @objc func resetGame() { // method to reset the game
-        gameTimer?.invalidate()
-        let ac = UIAlertController(title: "Reset game", message: "Do you want to reset the game?", preferredStyle: .alert)
-
-        ac.addAction(UIAlertAction(title: "Yes", style: .default) {     // resets the game
-            [weak self] _ in
-            self?.startGame()
-        })
-        ac.addAction(UIAlertAction(title: "No", style: .destructive) {    // does nothing //.destructive tints the button to red
-            [weak self] _ in
-            self?.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.timerCounter), userInfo: nil, repeats: true)       // pending to check self! with Makabre
-        })
-        present(ac, animated: true)
-    }
-    
-    @objc func editMines() {
+    @objc func editMines() {   // BL
         gameTimer?.invalidate()
         let ac = UIAlertController(title: "Enter the number of mines for your game", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
         ac.addAction(UIAlertAction(title: "Save", style: .default) {
             [weak self, weak ac] action in
-            guard let newNumberOfMines = Int(ac?.textFields?[0].text ?? "0") else { return }
+            guard let number = ac?.textFields?[0].text, let newNumberOfMines = Int(number) else { return }
             if newNumberOfMines <= 0 || newNumberOfMines >= self?.totalMinefields ?? 25 {
                 self?.editMines()
             } else {
@@ -237,14 +224,14 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         present(ac, animated: true)
     }
     
-    @objc func editCells() {
+    @objc func editCells() {   // BL
         gameTimer?.invalidate()
         let ac = UIAlertController(title: "Enter the number of cells for your game", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
         ac.addAction(UIAlertAction(title: "Save", style: .default) {
             [weak self, weak ac] action in
-            guard let newNumberOfCells = Int(ac?.textFields?[0].text ?? "0") else { return }
+            guard let number = ac?.textFields?[0].text, let newNumberOfCells = Int(number) else { return }
             if newNumberOfCells <= 0 || newNumberOfCells <= self?.numberOfMines ?? 1 {
                 self?.editCells()
             } else if !newNumberOfCells.isPerfectSquare {
@@ -262,7 +249,22 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         present(ac, animated: true)
     }
     
-    private func gameOver() { // method to reset the game
+    @objc func resetGame() { // method to reset the game --    // Partially moved to VM
+        gameTimer?.invalidate()
+        let ac = UIAlertController(title: viewModel.resetTitle, message: viewModel.resetMessage, preferredStyle: .alert)
+
+        ac.addAction(UIAlertAction(title: viewModel.resetYes, style: .default) {     // resets the game
+            [weak self] _ in
+            self?.startGame()
+        })
+        ac.addAction(UIAlertAction(title: viewModel.resetNo, style: .destructive) {    // does nothing //.destructive tints the button to red
+            [weak self] _ in
+            self?.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.timerCounter), userInfo: nil, repeats: true)       // pending to check self! with Makabre
+        })
+        present(ac, animated: true)
+    }
+    
+    private func gameOver() {   // BL
         gameTimer?.invalidate()
         let ac = UIAlertController(title: "You lose!", message: "A bomb killed you", preferredStyle: .alert)
 
@@ -273,7 +275,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         present(ac, animated: true)
     }
     
-    private func beatTheGame() { // method to reset the game
+    private func beatTheGame() {   // BL
         gameTimer?.invalidate()
         let ac = UIAlertController(title: "You win!", message: "You avoided all the bombs", preferredStyle: .alert)
 
@@ -284,7 +286,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         present(ac, animated: true)
     }
     
-    private func startGame() {
+    private func startGame() {     // BL
         var values = Array(repeating: true, count: numberOfMines) + Array(repeating: false, count: totalMinefields - numberOfMines)
         values.shuffle()
         valueMatrix = try? SquaredMatrix(values.map { CellModel(hasMine: $0) })    // create an array of arrays using the bool value of hasMine, we obtain an array of trues & falses
@@ -293,7 +295,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         isWinGameAlertDisplayed = false
     }
 
-    // func to convert our "time" (Double) into a string - https://stackoverflow.com/questions/26794703/swift-integer-conversion-to-hours-minutes-seconds/56811188#56811188?newreg=7c7f69c3286442c38ae7bca11b9ed359 (Swift 5)
+    // func to convert our "time" (Double) into a string -    // BL https://stackoverflow.com/questions/26794703/swift-integer-conversion-to-hours-minutes-seconds/56811188#56811188?newreg=7c7f69c3286442c38ae7bca11b9ed359 (Swift 5)
     private func timeString(time: TimeInterval) -> String {
         let minute = Int(time) / 60 % 60
         let second = Int(time) % 60
@@ -306,22 +308,6 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         leftBarButtonItem.title = "Time: \(timeString(time: time))"
     }
 }
-
-extension BinaryInteger {   // https://stackoverflow.com/questions/43301933/swift-3-find-if-the-number-is-a-perfect-square
-    var isPerfectSquare: Bool {
-        guard self >= .zero else { return false }
-        var sum: Self = .zero
-        var count: Self = .zero
-        var squareRoot: Self = .zero
-        while sum < self {
-            count += 2
-            sum += count
-            squareRoot += 1
-        }
-        return squareRoot * squareRoot == self
-    }
-}
-
 
 /*
  TO DO
