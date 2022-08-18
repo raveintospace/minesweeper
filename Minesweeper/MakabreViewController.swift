@@ -84,7 +84,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         
         if let collection = self.collectionView {
             let width = (collection.bounds.width - totalSpacing)/numberOfItemsPerRow
-            return CGSize(width: width.rounded(.down), height: width.rounded(.down))
+            return CGSize(width: width.rounded(.down), height: width.rounded(.down))    // rounded down!
         } else {
             return CGSize(width: 0, height: 0)
         }
@@ -193,14 +193,14 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         rightBarButtonItem.title = "Mines: \(numberOfMines)"
         
         let resetButton = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(resetGame))
-        let editMines = UIBarButtonItem(title: "Edit mines", style: .plain, target: self, action: #selector(editMines))
-        let editCells = UIBarButtonItem(title: "Edit cells", style: .plain, target: self, action: #selector(editCells))
+        let editMinesButton = UIBarButtonItem(title: "Edit mines", style: .plain, target: self, action: #selector(editNumberOfMines))
+        let editCellsButton = UIBarButtonItem(title: "Edit cells", style: .plain, target: self, action: #selector(editNumberOfCells))
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) // used to center resetButton
-        toolbarItems = [editCells, spacer, resetButton, spacer, editMines]
+        toolbarItems = [editCellsButton, spacer, resetButton, spacer, editMinesButton]
         navigationController?.isToolbarHidden = false
     }
     
-    @objc func editMines() {   // BL
+    @objc func editNumberOfMines() {   // BL
         gameTimer?.invalidate()
         let ac = UIAlertController(title: "Enter the number of mines for your game", message: nil, preferredStyle: .alert)
         ac.addTextField()
@@ -209,7 +209,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
             [weak self, weak ac] action in
             guard let number = ac?.textFields?[0].text, let newNumberOfMines = Int(number) else { return }
             if newNumberOfMines <= 0 || newNumberOfMines >= self?.totalMinefields ?? 25 {
-                self?.editMines()
+                self?.editNumberOfMines()
             } else {
                 self?.numberOfMines = newNumberOfMines
                 print(newNumberOfMines)
@@ -224,7 +224,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
         present(ac, animated: true)
     }
     
-    @objc func editCells() {   // BL
+    @objc func editNumberOfCells() {   // BL
         gameTimer?.invalidate()
         let ac = UIAlertController(title: "Enter the number of cells for your game", message: nil, preferredStyle: .alert)
         ac.addTextField()
@@ -233,9 +233,9 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
             [weak self, weak ac] action in
             guard let number = ac?.textFields?[0].text, let newNumberOfCells = Int(number) else { return }
             if newNumberOfCells <= 0 || newNumberOfCells <= self?.numberOfMines ?? 1 {
-                self?.editCells()
+                self?.editNumberOfCells()
             } else if !newNumberOfCells.isPerfectSquare {
-                self?.editCells()
+                self?.editNumberOfCells()
             } else {
                 self?.totalMinefields = newNumberOfCells
                 print("newNumberOfCells \(newNumberOfCells)")
@@ -296,7 +296,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     }
 
     // func to convert our "time" (Double) into a string -    // BL https://stackoverflow.com/questions/26794703/swift-integer-conversion-to-hours-minutes-seconds/56811188#56811188?newreg=7c7f69c3286442c38ae7bca11b9ed359 (Swift 5)
-    private func timeString(time: TimeInterval) -> String {
+    private func convertTimeFromDoubleToString(time: TimeInterval) -> String {
         let minute = Int(time) / 60 % 60
         let second = Int(time) % 60
         return String(format: "%02i:%02i", minute, second)
@@ -305,7 +305,7 @@ final class MakabreViewController: UICollectionViewController, UICollectionViewD
     // func called every second to update our timer
     @objc func timerCounter() {
         time += 1
-        leftBarButtonItem.title = "Time: \(timeString(time: time))"
+        leftBarButtonItem.title = "Time: \(convertTimeFromDoubleToString(time: time))"
     }
 }
 
